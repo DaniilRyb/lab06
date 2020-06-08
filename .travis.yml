@@ -1,0 +1,35 @@
+language: cpp
+jobs:
+  include:
+  - os: osx
+    script:
+    - cmake -H. -B_build
+    - cmake --build _build
+    - cd _build
+    - cpack -G DragNDrop
+    - cd ..
+  - os: linux
+    script:
+    - cmake -H. -B_build
+    - cmake --build _build
+    - cd _build
+    - cpack -G DEB
+    - cpack -G RPM
+    - cd ..
+addons:
+  apt:
+    packages:
+    - cmake
+    - cmake-data
+    - rpm
+deploy:
+  provider: releases
+  api_key:
+    secure: hHxwfFXtD/PRP5WYvzyS/1mkh1/S2N3TbrdcXxbTbeSFAZVELGhvbAbm4ju8UXQHRfBrRPaFiTw2u5i1nenAgXaVoxigNi3fw2q0FzRawrUEC+u0T7N64ZwEshI1pVSmdZqH2LASRrww59RR7luynMWF3TQSlh+uEoZK3PoowZMWGYTwdAHOhIodJS+5vh0RZM0/0zizdhOjR8crGIsR+uQ8hXjabQEiVuIWuw0jkcjYMjGg9P+Q2EnKrG2hBVejYW7HKZkc4jsLLpMdpLRUCW5x0EGn3vjUch14RMC+wauBZ8gt3LVI0YZi3LIWPSWy2rAuki+ID7bbZpPBYgm3b9LB077xRJXEKI5OHjStZowj0PjJhCJjvswzXKOS5SqUSIMWto6iU/dYgDUFvjdscmAp7P/jmqyQ4zl/B2a4sskCTP2FtrNXlTi7S9ZEpmc2mp3HJYdMfCHJAeeNGWmX8D5hl57q8/i9Nx8c1y+ezVLhALM530FNqXhIiBIcivXoXUFNbVS0TFxWn+HxcbNgq6a374pzy5wtholvaFQrPrw8qLzcS8iLu8m8GXsj8jG/EmakPsXkL7AeDP6MBTpdP+LRdFJ67fbD3eu7wMqLpAti3QPDRFCtf4d5xEl4zAc60RRv+LZCyrnpO6p1NUnY7RI7XYrtEah+pEbuRDvpVr8=
+  file: 
+    - ./_build/print-0.1.0.0-Darwin.dmg
+    - ./_build/print-0.1.0.0-Linux.deb
+    - ./_build/print-0.1.0.0-Linux.rpm
+  skip_cleanup: true
+  on:
+    tags: true
